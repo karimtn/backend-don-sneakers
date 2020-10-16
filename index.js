@@ -15,6 +15,9 @@ app.use(helmet());
 const add_product = require('./routes/add-product')
 app.use("/app/admin", add_product)
 
+const delete_product = require('./routes/delete-product');
+app.use("/app/admin/", delete_product)
+
 // #DATABASE CONNECTION#
 const DB_URL = process.env.MONGODB_URL;
 

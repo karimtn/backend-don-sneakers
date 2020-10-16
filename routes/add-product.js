@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const product = require("../models/products");
 
-module.exports = router.post("/new-product", async (req, res) => {
+module.exports = router.post("/new-product", async(req, res) => {
   try {
     await new product({
       name: req.body.name,
