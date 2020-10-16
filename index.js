@@ -6,11 +6,14 @@ const morgan = require("morgan");
 const app = express();
 require("dotenv").config();
 
-
 // # MIDDLEWARES # 
 app.use(bodyParser.json());
 app.use(morgan("combined"));
-app.use(helmet);
+app.use(helmet());
+
+// #API MIDDLEWARES#
+const add_product = require('./routes/add-product')
+app.use("/app/admin", add_product)
 
 // #DATABASE CONNECTION#
 const DB_URL = process.env.MONGODB_URL;
