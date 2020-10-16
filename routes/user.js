@@ -6,8 +6,8 @@ router.post("/register", async (req, res) => {
   try {
     let { email, password, passwordConfirmation, phoneNumber } = req.body;
 
-    const emailRegistred = await user.findOne(email);
-    const phoneNumberRegistred = await user.findOne(phoneNumber);
+    const emailRegistred = await user.findOne({email});
+    const phoneNumberRegistred = await user.findOne({phoneNumber});
 
     if (
       password <= 6 &&
