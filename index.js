@@ -12,11 +12,11 @@ app.use(morgan("combined"));
 app.use(helmet());
 
 // #API MIDDLEWARES#
-const add_product = require('./routes/add-product')
-app.use("/app/admin", add_product)
+const product = require('./routes/product')
+app.use("/app/admin", product)
 
-const delete_product = require('./routes/delete-product');
-app.use("/app/admin/", delete_product)
+// const delete_product = require('./routes/delete-product');
+// app.use("/app/admin/", delete_product)
 
 // #DATABASE CONNECTION#
 const DB_URL = process.env.MONGODB_URL;
