@@ -15,6 +15,15 @@ const adminSchema = new Schema({
   password: {
     type: String,
   },
+  passwordConfirmation: {
+    type: String
+  },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("admins", adminSchema);

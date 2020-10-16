@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const admin = require("../../models/admin");
 
-router.post("/admin-register", async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { email, password, passwordConfirmation } = req.body;
     const emailRegistred = await admin.find({ email });

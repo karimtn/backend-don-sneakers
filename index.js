@@ -11,15 +11,18 @@ app.use(bodyParser.json());
 app.use(morgan("combined"));
 app.use(helmet());
 
-// # API MIDDLEWARES ADMIN#
+// # API MIDDLEWARES ADMIN #
 const product_methods = require("./api/admin/product-methods")
 app.use("/app/admin", product_methods)
 
-// # API MIDDLEWARES USER#
+const authentication_admin = require("./api/admin/authentication-admin")
+app.use("/app/admin", authentication_admin)
+
+// # API MIDDLEWARES USER #
 const authentication_user = require("./api/user/authentication-user")
 app.use("/app/user", authentication_user)
 
-// #DATABASE CONNECTION#
+// # DATABASE CONNECTION #
 const DB_URL = process.env.MONGODB_URL;
 
 mongoose.connect(DB_URL, {useNewUrlParser: true, useCreateIndex: true,
