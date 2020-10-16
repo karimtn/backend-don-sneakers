@@ -11,10 +11,11 @@ app.use(bodyParser.json());
 app.use(morgan("combined"));
 app.use(helmet());
 
-// #API MIDDLEWARES#
+// # API MIDDLEWARES ADMIN#
 const product = require("./routes/product")
 app.use("/app/admin", product)
 
+// # API MIDDLEWARES USER#
 const user = require("./routes/user")
 app.use("/app/user", user)
 
