@@ -2,12 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const adminSchema = new Schema({
-  fullName: {
+  firstName: {
     type: String,
   },
-  username: {
-    type: String,
-    unique: true,
+  lastName: {
+    type: String
   },
   email: {
     type: String,
