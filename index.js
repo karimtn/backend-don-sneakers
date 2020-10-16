@@ -12,8 +12,11 @@ app.use(morgan("combined"));
 app.use(helmet());
 
 // #API MIDDLEWARES#
-const product = require('./routes/product')
+const product = require("./routes/product")
 app.use("/app/admin", product)
+
+const user = require("./routes/user")
+app.use("/app/user", user)
 
 // #DATABASE CONNECTION#
 const DB_URL = process.env.MONGODB_URL;
