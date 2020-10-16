@@ -6,7 +6,7 @@ const adminSchema = new Schema({
     type: String,
   },
   lastName: {
-    type: String
+    type: String,
   },
   email: {
     type: String,
@@ -16,7 +16,7 @@ const adminSchema = new Schema({
     type: String,
   },
   passwordConfirmation: {
-    type: String
+    type: String,
   },
   resetPasswordToken: {
     type: String,
@@ -26,4 +26,4 @@ const adminSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("admins", adminSchema);
+module.exports = mongoose.model("admin", adminSchema);

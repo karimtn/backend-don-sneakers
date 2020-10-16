@@ -1,20 +1,26 @@
 const router = require("express").Router();
+const bcrypt = require('bcrypt')
 const admin = require("../../models/admin");
 
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, passwordConfirmation } = req.body;
-    const emailRegistred = await admin.find({ email });
-    if (!emailRegistred && password === passwordConfirmation) {
+    const { firstName, lastName, email, password, passwordConfirmation } = req.body;
+    const emailRegistered = await admin.findOne({ email });
+    console.log('1',password.length)
+    console.log('2',password === passwordConfirmation)
+    console.log('3',password.length >= 6 )
+    if (!emailRegistered && password.length >= 6 && password === passwordConfirmation) {
       const newAdmin = new admin({
         firstName,
         lastName,
         email,
         password,
+        resetPasswordToken: "",
+        resetPasswordExpires: 0,
       });
-      await bcrypt.hash(newAdmin.password, 10, async (req, res) => {
+      bcrypt.hash(newAdmin.password, 10, async (req, res) => {
         await newAdmin.save();
-        res.status(201).send(newAdmin);
+        res.status(201).send("user registered done");
       });
     }
   } catch (error) {
@@ -22,4 +28,4 @@ router.post("/register", async (req, res) => {
   }
 });
 
-module.exports = router
+module.exports = router;
