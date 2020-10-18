@@ -6,22 +6,21 @@ router.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, email, password, passwordConfirmation } = req.body;
     const emailRegistered = await admin.findOne({ email });
-    console.log('1',password.length)
-    console.log('2',password === passwordConfirmation)
-    console.log('3',password.length >= 6 )
+    
     if (!emailRegistered && password.length >= 6 && password === passwordConfirmation) {
-      const newAdmin = new admin({
+      const passwordHashed = await bcrypt.hash(password, 10, async(req,res) => {
+        const newAdmin = new admin({
         firstName,
         lastName,
         email,
-        password,
+        password:passwordHashed,
         resetPasswordToken: "",
         resetPasswordExpires: 0,
-      });
-      bcrypt.hash(newAdmin.password, 10, async (req, res) => {
-        await newAdmin.save();
-        res.status(201).send("user registered done");
-      });
+      })
+      await newAdmin.save();
+      console.log("hashedpass",passwordHashed)
+      })
+      res.json(newAdmin)
     }
   } catch (error) {
     console.log(error);
