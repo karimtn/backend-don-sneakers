@@ -18,10 +18,6 @@ const userSchema = new Schema({
   passwordConfirmation: {
     type: String
   },
-  phoneNumber: {
-    type: String,
-    unique: true,
-  },
   dateOfBirth: {
     type: String,
   },

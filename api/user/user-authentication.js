@@ -4,17 +4,12 @@ const user = require("../../models/users");
 
 router.post("/register", async (req, res) => {
   try {
-    let { firstName, lastName, email, password, passwordConfirmation, phoneNumber, dateOfBirth } = req.body;
+    let { firstName, lastName, email, password, passwordConfirmation, dateOfBirth } = req.body;
 
     const emailRegistered = await user.findOne({ email });
-    const phoneNumberRegistered = await user.findOne({ phoneNumber });
 
     if (emailRegistered) {
       res.send("your email already exist");
-    }
-
-    if (phoneNumberRegistered) {
-      res.send("your phone number is already linked to another account");
     }
 
     if (password.length < 6) {
@@ -31,7 +26,6 @@ router.post("/register", async (req, res) => {
         lastName,
         email,
         password,
-        phoneNumber,
         dateOfBirth,
         resetPasswordToken: "",
         resetPasswordExpires: 0,
