@@ -12,15 +12,19 @@ app.use(morgan("combined"));
 app.use(helmet());
 
 // # API MIDDLEWARES ADMIN #
-const product_methods = require("./api/admin/product-methods")
-app.use("/app/admin", product_methods)
-
-const authentication_admin = require("./api/admin/authentication-admin")
-app.use("/app/admin", authentication_admin)
+const admin_authentication = require("./api/admin/admin-authentication")
+const admin_user_management_methods = require("./api/admin/user-management-methods")
+const admin_product_methods = require("./api/admin/admin-product-methods")
+app.use("/app/admin", admin_authentication)
+app.use("/app/admin", admin_user_management_methods)
+app.use("/app/admin", admin_product_methods)
 
 // # API MIDDLEWARES USER #
-const authentication_user = require("./api/user/authentication-user")
-app.use("/app/user", authentication_user)
+const user_authentication = require("./api/user/user-authentication")
+const user_product_methods = require("./api/user/user-product-methods")
+app.use("/app/user", user_authentication)
+app.use("/app/user", user_product_methods)
+
 
 // # DATABASE CONNECTION #
 const DB_URL = process.env.MONGODB_URL;
