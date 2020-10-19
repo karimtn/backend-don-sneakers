@@ -7,7 +7,7 @@ router.post("/register", async (req, res) => {
   try {
     let { firstName, lastName, email, password, passwordConfirmation } = req.body;
     const emailRegistered = await admin.findOne({ email });
-
+   
     if (emailRegistered) {
       res.send("your email already exist");
     }
@@ -28,16 +28,15 @@ router.post("/register", async (req, res) => {
         resetPasswordExpires: 0,
       });
 
-      bcrypt.hash(newAdmin.password, 10, (err, hash) => {
+      bcrypt.hash(newAdmin.password, 10, async (err,hash) => {
         if (err) {
           console.log(err);
         } else {
           newAdmin.password = hash;
+          await newAdmin.save();
         }
       });
-
-      await newAdmin.save();
-      res.status(201).send("new admin created");
+      res.status(201).send(newAdmin);
     }
 
   } catch (error) {
@@ -46,29 +45,29 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const adminAccount = await admin.findOne({ email });
-  console.log(adminAccount)
-  if (adminAccount) {
-    console.log('before bcrypt')
-     bcrypt.compare(password, adminAccount.password, (err, res) => {
-      console.log('inside bcrypt', res);
-      if (res) {
-        console.log('succ')
-        res.send("Auth succ");
-      }
+// router.post("/login", async (req, res) => {
+//   const { email, password } = req.body;
+//   const adminAccount = await admin.findOne({ email });
+//   console.log(adminAccount)
+//   if (adminAccount) {
+//     console.log('before bcrypt')
+//      bcrypt.compare(password, adminAccount.password, (err, res) => {
+//       console.log('inside bcrypt', res);
+//       if (res) {
+//         console.log('succ')
+//         res.send("Auth succ");
+//       }
       
-      if (err) {
-        console.log(err);
-        res.send("Auth failed");
-      }
-    });
-  } else {
-    console.log('not exist')
-    res.send("admin doesent exist");
-  }
-});
+//       if (err) {
+//         console.log(err);
+//         res.send("Auth failed");
+//       }
+//     });
+//   } else {
+//     console.log('not exist')
+//     res.send("admin doesent exist");
+//   }
+// });
 
 
 module.exports = router;
