@@ -9,7 +9,6 @@ router.get("/all-products", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send(error);
-
   }
 });
 
@@ -43,8 +42,8 @@ router.put("/edit-product/:id", async (req, res) => {
 // # DELETE A PRODUCT #
 router.delete("/delete-product/:id", async (req, res) => {
   try {
-    const productDeleted = await product.findByIdAndDelete(req.params.id);
-    res.status(204).send(productDeleted);
+    await product.findByIdAndDelete(req.params.id);
+    res.status(204).send("product deleted successfully");
   } catch (error) {
     console.log(error);
     res.send(error);

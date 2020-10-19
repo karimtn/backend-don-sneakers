@@ -12,7 +12,7 @@ router.get("/all-products", async (req, res) => {
   }
 });
 
-// # GET ALL THE INFO OF A SPECIFIC PRODUCT #
+// # GET ALL THE INFO OF A SPECIFIC PRODUCT  #
 router.get("/product/:id", async (req, res) => {
   try {
     const productInfo = await product.findById(req.params.id);
