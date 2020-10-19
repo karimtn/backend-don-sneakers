@@ -23,7 +23,7 @@ app.use("/app/admin", admin_user_management_methods)
 app.use("/app/admin", admin_product_methods)
 app.user("/app/admin", admin_reset_password)
 
-// # API MIDDLEWARES USER #
+// #  API MIDDLEWARES USER  #
 const user_authentication = require("./api/user/user-authentication")
 const user_product_methods = require("./api/user/user-product-methods")
 const user_reset_password = require("./api/user/user-reset-password")

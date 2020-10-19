@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const admin = require("../../models/admin");
 require("dotenv").config();
 
-
+//# SAVE THE USER INFORMATION AND HASHING THE PASSWORD #
 router.post("/register", async (req, res) => {
   try {
     let {
@@ -54,6 +54,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// # LOGIN COMPARING THE EMAL AND PASSWORD JWT AUTH TOKEN METHOD #
 router.post("/login", async (req, res) => {
   try {
     const { _id, email, password } = req.body;
