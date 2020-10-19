@@ -15,6 +15,10 @@ router.post("/register", async (req, res) => {
       res.send("your password length should be more than 6 please ");
     }
 
+    if (phoneNumberRegistred) {
+      res.send('your phone number is already linked to another account')
+    }
+
     if (password !== passwordConfirmation) {
       res.send("your password and your password confirmation are not equal try again");
     } else {
@@ -38,8 +42,11 @@ router.post("/register", async (req, res) => {
       await newAdmin.save();
       res.status(201).send("new admin created");
     }
-  } catch (error) {}
-  console.log(error);
+
+  } catch (error) {
+    console.log(error);
+    res.send('error')
+  }
 });
 
 module.exports = router;
