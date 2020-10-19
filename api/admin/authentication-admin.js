@@ -4,11 +4,12 @@ const admin = require("../../models/admin");
 
 router.post("/register", async (req, res) => {
   try {
-    const { firstName, lastName, email, password, passwordConfirmation } = req.body;
+    let { firstName, lastName, email, password, passwordConfirmation } = req.body;
     const emailRegistered = await admin.findOne({ email });
     console.log('first log',password)
     
     if (!emailRegistered && password.length >= 6 && password === passwordConfirmation) {
+
       const newAdmin = new admin({
         firstName,
         lastName,
@@ -18,14 +19,16 @@ router.post("/register", async (req, res) => {
         resetPasswordExpires: 0,
       })
       
-      console.log('before bcrypt', newAdmin.password)
-
-      bcrypt.hash(newAdmin.password, 10, async (err,hash) => {
-        console.log('hash',hash)
-        await newAdmin.save();
-        // console.log("hashedpass",newAdmin)
+      bcrypt.hash(newAdmin.password, 10, (err,hash) => {
+        if (err) {
+          console.log(err)
+        } else {
+          newAdmin.password = hash
+          }
       })
-      res.json(newAdmin)
+
+      await newAdmin.save()
+      res.status(201).send('new admin created')
     }
   } catch (error) {
     console.log(error);
