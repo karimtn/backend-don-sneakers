@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 const admin = require("../../models/admin");
+require("dotenv").config();
 
 router.post("/register", async (req, res) => {
   try {
@@ -36,7 +37,7 @@ router.post("/register", async (req, res) => {
           await newAdmin.save();
         }
       });
-      res.status(201).send(newAdmin);
+      res.status(201).send("new admin created");
     }
 
   } catch (error) {
@@ -45,29 +46,30 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// router.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
-//   const adminAccount = await admin.findOne({ email });
-//   console.log(adminAccount)
-//   if (adminAccount) {
-//     console.log('before bcrypt')
-//      bcrypt.compare(password, adminAccount.password, (err, res) => {
-//       console.log('inside bcrypt', res);
-//       if (res) {
-//         console.log('succ')
-//         res.send("Auth succ");
-//       }
+router.post("/login", async (req, res) => {
+  const { _id, email, password } = req.body;
+  const adminAccount = await admin.findOne({ email });
+  console.log(adminAccount)
+  if (adminAccount) {
+    console.log('before bcrypt')
+     bcrypt.compare(password, adminAccount.password, (err, res) => {
+      console.log('inside bcrypt', res);
+      if (res) {
+        console.log('succ')
+        const token = jwt.sign({email,_id},process.env.JWT_KEY,{expiresIn:"1h"})
+        console.log(token)
+      }
       
-//       if (err) {
-//         console.log(err);
-//         res.send("Auth failed");
-//       }
-//     });
-//   } else {
-//     console.log('not exist')
-//     res.send("admin doesent exist");
-//   }
-// });
+      if (err) {
+        console.log(err);
+        res.send("Auth failed");
+      }
+    });
+  } else {
+    console.log('not exist')
+    res.send("admin doesent exist");
+  }
+});
 
 
 module.exports = router;
