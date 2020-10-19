@@ -16,7 +16,7 @@ const userSchema = new Schema({
     type: String,
   },
   passwordConfirmation: {
-    type: String
+    type: String,
   },
   dateOfBirth: {
     type: String,
