@@ -49,21 +49,18 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { _id, email, password } = req.body;
   const adminAccount = await admin.findOne({ email });
-  console.log(adminAccount)
   if (adminAccount) {
-    console.log('before bcrypt')
      bcrypt.compare(password, adminAccount.password, (err, res) => {
-      console.log('inside bcrypt', res);
-      if (res) {
-        console.log('succ')
+       if (err) {
+         console.log(err);
+         res.send("Auth failed");
+       }
+
+       if (res) {
         const token = jwt.sign({email,_id},process.env.JWT_KEY,{expiresIn:"1h"})
         console.log(token)
       }
       
-      if (err) {
-        console.log(err);
-        res.send("Auth failed");
-      }
     });
   } else {
     console.log('not exist')
