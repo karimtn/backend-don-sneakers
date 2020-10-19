@@ -1,24 +1,25 @@
 const router = require("express").Router();
-const nodemailer = require("nodemailer");
+const nodeMailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const admin = require("../../models/admin");
 require("dotenv").config;
 
+// # SEND EMAIL TO THE ADMIN EMAIL #
 router.post("/reset-password", async (req, res) => {
   try {
     const { email } = req.body;
     if (email === "") throw new Error("Email required !");
     const adminInfo = await admin.findOne({ email });
     if (adminInfo === null) {
-      console.error("Email is not in the data-base");
-      throw new Error("Email not in the data-base");
+      console.error("email not found in the db");
+      throw new Error("email not found in the db");
     }
     adminInfo.resetPasswordToken = crypto.randomBytes(20).toString("hex");
     adminInfo.resetPasswordExpires = Date.now() + 3600000;
     await admin.save();
 
-    const transporter = nodemailer.createTransport({
+    const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_ADRESS,
@@ -29,7 +30,7 @@ router.post("/reset-password", async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_ADRESS,
       to: email,
-      subject: "DON-SNEAKER IS HELPING YOU TO RESET YOUR PASSWORD!",
+      subject: "Don-Sneaker is helping you to reset your password!",
       text: `To set your new password please
              click here : https://localhost:4200/${adminInfo.resetPasswordToken}`,
     };
@@ -42,6 +43,7 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
+// # RESET THE PASSWORD OF THE ADMIN #
 router.post("/reset-password/:token", async (req, res) => {
   try {
     const { confirmedPassword } = req.body

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const admin = require("../../models/admin");
 require("dotenv").config();
 
+
 router.post("/register", async (req, res) => {
   try {
     let {

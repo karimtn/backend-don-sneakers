@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const user = require("../../models/users");
 
+// # DELETE A USER #
 router.delete("/delete-user/:id", async (req, res) => {
   try {
     await user.findByIdAndDelete(req.params.id);
