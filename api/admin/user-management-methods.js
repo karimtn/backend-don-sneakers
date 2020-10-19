@@ -3,8 +3,8 @@ const user = require("../../models/users");
 
 router.delete("/delete-user/:id", async (req, res) => {
   try {
-    const userDeleted = await user.findByIdAndDelete(req.params.id);
-    res.status(204).send(userDeleted);
+    await user.findByIdAndDelete(req.params.id);
+    res.status(204).send("user deleted successfully");
   } catch (error) {
     console.log(error);
     res.send(error);
