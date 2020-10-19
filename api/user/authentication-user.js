@@ -10,11 +10,8 @@ router.post("/register", async (req, res) => {
     const phoneNumberRegistered = await user.findOne({ phoneNumber });
     console.log("before if block");
 
-    if (
-      password <= 6 &&
-      password === passwordConfirmation &&
-      !phoneNumberRegistered &&
-      !emailRegistered
+    if (!phoneNumberRegistered && !emailRegistered && password.length >= 6 &&
+      password === passwordConfirmation 
     ) {
       let newUser = new user({
         firstName,
@@ -29,11 +26,9 @@ router.post("/register", async (req, res) => {
 
       await bcrypt.hash(newUser.password, 10, async (req, res) => {
         await newUser.save();
-        console.log("omar here");
-        res.status(201).send(newUser);
       });
     }
-
+      res.status(201).json(newUser)
     console.log("outside of the if blocky");
   } catch (error) {
     console.log(error);
