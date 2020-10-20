@@ -3,24 +3,23 @@ const user = require("../../models/users");
 const product = require("../../models/products");
 const selledProduct = require("../../models/selledProduct");
 
-router.post("/after/:user-id/:product-id", async (req, res) => {
+router.post("/after/:user_id/:product_id", async (req, res) => {
   try {
-    const { product_id, user_id } = req.params;
-    const usersInfo = user.findById({ user_id });
-    console.log('user info',userInfo)
-    console.log('product info',productInfo)
-    const productInfo = product.findById({ product_id });
+    const {user_id, product_id} = req.params 
+    const userInfo = await user.findById(user_id);
+    const productInfo = await product.findById(product_id);
     const omar = await new selledProduct({
-      userMail: usersInfo.email,
+      userMail: userInfo.email,
       productName: productInfo.name,
       price: productInfo.price,
       quantity: req.body.quantity,
       total: productInfo.price * req.body.quantity,
     }).save();
+    console.log('omar here',omar)
     res.json(omar);
   } catch (error) {
     res.send(error);
-    console.log(erro);
+    console.log(error);
   }
 });
 
