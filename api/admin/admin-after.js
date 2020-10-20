@@ -12,18 +12,18 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
     const productInfo = await product.findById(product_id);
     let today = new Date();
     const dd = String(today. getDate()). padStart(2, '0');
-    const mm = String(today. getMonth() + 1). padStart(2, '0'); //January is 0!
+    const mm = String(today. getMonth() + 1). padStart(2, '0');
     const yyyy = today. getFullYear();
     today = ( mm + '/' + dd + '/' + yyyy );
     let data = {
         "currency": "EUR",
-        "taxNotation": "vat", //or gst
+        "taxNotation": "vat",
         "marginTop": 25,
         "marginRight": 25,
         "marginLeft": 25,
         "marginBottom": 25,
-        "logo": "https://www.snupps.com/api/2.10/users/355355/avatar/355355.400.jpg", //or base64
-        //"logoExtension": "png", //only when logo is base64
+        "logo": "https://www.snupps.com/api/2.10/users/355355/avatar/355355.400.jpg",
+        
         "sender": {
             "company": "Sneaker Don",
             "address": "....",
@@ -33,28 +33,27 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
         
         },
         "client": {
+               "company": `${userInfo.firstName} ${userInfo.lastName}`,
                "address": "no need for now",
                "zip": `${userInfo.zipCode}`,
                "city": `${userInfo.city}`,
                "country": `${userInfo.country}`
         },
-        "invoiceNumber": "2020.0001",
+        "invoiceNumber": "",
         "invoiceDate": today,
         "products": [
             {
-                "quantity": productInfo.quantity,
-                "description": productInfo.description,
-                "price": productInfo.total
+                "quantity": req.body.quantity,
+                "description": productInfo.name,
+                "price": productInfo.price
             },
         ],
-        "bottomNotice": "Kindly pay your invoice within 15 days."
     };
-     
+
     const result = await easyinvoice.createInvoice(data);                       
     await fs.writeFileSync("invoice.pdf", result.pdf, 'base64');
-    console.log(result)
 
-    const omar = await new selledProduct({
+      await new selledProduct({
       userMail: userInfo.email,
       productName: productInfo.name,
       price: productInfo.price,
@@ -62,7 +61,7 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
       total: productInfo.price * req.body.quantity,
     }).save();
     
-    res.json(omar)
+    res.json('shipping info saved in the db')
 
   } catch (error) {
     res.send(error);
