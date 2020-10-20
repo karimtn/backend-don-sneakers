@@ -32,7 +32,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     });
 
     const mailOptions = {
-      from: NodemailerConfig.pass,
+      from: process.env.EMAIL_ADDRESS,
       to: userInfo.email,
       subject: "payment status",
       text: `Thanks for your purchase`,
