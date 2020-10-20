@@ -18,10 +18,12 @@ const admin_authentication = require("./api/admin/admin-authentication")
 const admin_user_management_methods = require("./api/admin/user-management-methods")
 const admin_product_methods = require("./api/admin/admin-product-methods")
 const admin_reset_password = require("./api/admin/admin-reset-password")
+const test = require("./api/admin/admin-after")
 app.use("/app/admin", admin_authentication)
 app.use("/app/admin", admin_user_management_methods)
 app.use("/app/admin", admin_product_methods)
 app.use("/app/admin", admin_reset_password)
+app.use("/app/admin", test )
 
 // #  API MIDDLEWARES USER  #
 const user_authentication = require("./api/user/user-authentication")

@@ -21,3 +21,5 @@ router.post("/after/:user-id/:product-id", async (req, res) => {
     console.log(erro);
   }
 });
+
+module.exports = router
