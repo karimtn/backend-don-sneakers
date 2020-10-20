@@ -21,6 +21,22 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: String,
   },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true
+  },
+  zipCode: {
+    type: Number,
+    required: true,
+  },
   resetPasswordToken: {
     type: String,
   },
