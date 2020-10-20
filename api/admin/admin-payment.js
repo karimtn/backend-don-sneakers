@@ -40,7 +40,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         city: `${userInfo.city}`,
         country: `${userInfo.country}`,
       },
-      invoiceNumber: "",
+      invoiceNumber: number,
       invoiceDate: today,
       products: [
         {
