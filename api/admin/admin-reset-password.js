@@ -22,13 +22,13 @@ router.post("/reset-password", async (req, res) => {
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_ADRESS,
+        user: process.env.EMAIL_ADDRESS,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_ADRESS,
+      from: process.env.EMAIL_ADDRESS,
       to: email,
       subject: "Don-Sneaker is helping you to reset your password!",
       text: `To set your new password please
