@@ -60,7 +60,6 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
       price: productInfo.price,
       quantity: req.body.quantity,
       total: productInfo.price * req.body.quantity,
-      invoice: result
     }).save();
     
     res.json(omar)
