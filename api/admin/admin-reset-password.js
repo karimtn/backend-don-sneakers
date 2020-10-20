@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const nodeMailer = require("nodemailer");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const admin = require("../../models/admin");
 require("dotenv").config;
