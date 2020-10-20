@@ -1,10 +1,12 @@
 const router = require("express").Router();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const easyinvoice = require("easyinvoice");
 const nodeMailer = require("nodemailer")
 const user = require("../../models/users");
 const product = require("../../models/products");
 const selledProduct = require("../../models/selledProduct");
 const fs = require("fs");
+require("dotenv").config()
 let number = 0
 
 router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
@@ -13,6 +15,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const userInfo = await user.findById(user_id);
     const productInfo = await product.findById(product_id);
 
+    let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`
     let total = userInfo.price * req.body.quantity
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -33,7 +36,9 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       to: userInfo.email,
       subject: "payment status",
       text: `Thanks for your purchase`,
-      attachments
+      attachments : [
+        { fileName : pdfName , path: `../../assets/pdf-invoices/${pdfName}`}
+      ]
     };
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -97,7 +102,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     
     const result = await easyinvoice.createInvoice(data);
     await fs.writeFileSync(
-       `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`,
+      pdfName,
       result.pdf,
       "base64"
     );
