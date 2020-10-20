@@ -7,9 +7,11 @@ router.post("/after/:user-id/:product-id", async (req, res) => {
   try {
     const { product_id, user_id } = req.params;
     const usersInfo = user.findById({ user_id });
+    console.log('user info',userInfo)
+    console.log('product info',productInfo)
     const productInfo = product.findById({ product_id });
     const omar = await new selledProduct({
-      name: usersInfo.email,
+      userMail: usersInfo.email,
       productName: productInfo.name,
       price: productInfo.price,
       quantity: req.body.quantity,
