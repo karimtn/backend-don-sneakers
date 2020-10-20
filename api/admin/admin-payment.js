@@ -6,7 +6,7 @@ const selledProduct = require("../../models/selledProduct");
 const fs = require("fs");
 let number = 0
 
-router.post("/after/:user_id/:product_id", async (req, res) => {
+router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
   try {
     const { user_id, product_id } = req.params;
     const userInfo = await user.findById(user_id);
@@ -28,9 +28,9 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
 
       sender: {
         company: "Sneaker Don",
-        address: "....",
-        zip: "45484aa",
-        city: "Lyon",
+        address: "Rue Guynemer, 38",
+        zip: "75006",
+        city: "Paris",
         country: "France",
       },
       client: {
