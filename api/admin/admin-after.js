@@ -14,7 +14,7 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
     const dd = String(today. getDate()). padStart(2, '0');
     const mm = String(today. getMonth() + 1). padStart(2, '0');
     const yyyy = today. getFullYear();
-    today = ( mm + '/' + dd + '/' + yyyy );
+    today = ( mm + '-' + dd + '-' + yyyy );
     let data = {
         "currency": "EUR",
         "taxNotation": "vat",
@@ -51,8 +51,8 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
         ],
     };
 
-    const result = await easyinvoice.createInvoice(data);                       
-    await fs.writeFileSync("invoice.pdf", result.pdf, 'base64');
+    const result = await easyinvoice.createInvoice(data);    
+    await fs.writeFileSync(`${userInfo.name}  ${today}.pdf`, result.pdf, 'base64');               
 
       await new selledProduct({
       userMail: userInfo.email,
