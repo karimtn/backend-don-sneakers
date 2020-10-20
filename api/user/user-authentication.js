@@ -4,7 +4,18 @@ const user = require("../../models/users");
 
 router.post("/register", async (req, res) => {
   try {
-    let { firstName, lastName, email, password, passwordConfirmation, phoneNumber, dateOfBirth } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      passwordConfirmation,
+      phoneNumber,
+      dateOfBirth,
+      country,
+      city,
+      zipCode,
+    } = req.body;
 
     const emailRegistered = await user.findOne({ email });
     const phoneNumberRegistered = await user.findOne({ phoneNumber });
@@ -25,19 +36,36 @@ router.post("/register", async (req, res) => {
       res.send(
         "your password and your password confirmation are not equal try again"
       );
+
+    if (!dateOfBirth) {
+      res.send("you should enter a date of bith to register")
+    }
+
+    if (!country || !city) {
+      res.send("you should enter a country and country to register")
+    }
+
+    if (!zipCode) {
+      res.send("you should enter a zip code to register")
+    }
+
     } else {
       let newUser = new user({
         firstName,
         lastName,
         email,
         password,
+        dateOfBirth,
         phoneNumber,
+        country,
+        city,
+        zipCode,
         dateOfBirth,
         resetPasswordToken: "",
         resetPasswordExpires: 0,
       });
 
-      bcrypt.hash(newUser.password, 10, (err, hash) => {
+      await bcrypt.hash(newUser.password, 10, (err, hash) => {
         if (err) {
           console.log(err);
         } else {
