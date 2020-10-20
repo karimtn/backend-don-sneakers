@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
       res.send("your phone number is already linked to another account");
     }
 
-    if (password.length > 6) {
+    if (password.length < 6) {
       res.send("your password length should be more than 6 please ");
     }
 
