@@ -14,7 +14,8 @@ router.post("/register", async (req, res) => {
       dateOfBirth,
       country,
       city,
-      zipCode,
+      address,
+      postalCode,
     } = req.body;
 
     const emailRegistered = await user.findOne({ email });
@@ -41,12 +42,12 @@ router.post("/register", async (req, res) => {
       res.send("you should enter a date of bith to register")
     }
 
-    if (!country || !city) {
-      res.send("you should enter a country and country to register")
+    if (!country || !city || !address) {
+      res.send("you should enter your country city and address to register")
     }
 
-    if (!zipCode) {
-      res.send("you should enter a zip code to register")
+    if (!postalCode) {
+      res.send("you should enter a postal code to register")
     }
 
     } else {
@@ -59,7 +60,8 @@ router.post("/register", async (req, res) => {
         phoneNumber,
         country,
         city,
-        zipCode,
+        address,
+        postalCode,
         dateOfBirth,
         resetPasswordToken: "",
         resetPasswordExpires: 0,

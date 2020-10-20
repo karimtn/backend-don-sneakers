@@ -16,6 +16,10 @@ const productSchema = new Schema({
   quantity: {
     type: Number,
   },
+  tax:{
+    type:Number,
+    required: true
+  }
 });
 
 module.exports = mongoose.model("products", productSchema);

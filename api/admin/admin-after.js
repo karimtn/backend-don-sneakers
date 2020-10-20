@@ -33,7 +33,7 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
         
         },
         "client": {
-               "company": `${userInfo.firstName} ${userInfo.lastName}`,
+               "company": `${userInfo.firstName} ${userInfo.lastName}`.toUpperCase(),
                "address": "no need for now",
                "zip": `${userInfo.zipCode}`,
                "city": `${userInfo.city}`,
@@ -45,6 +45,7 @@ router.post("/after/:user_id/:product_id", async (req, res) => {
             {
                 "quantity": req.body.quantity,
                 "description": productInfo.name,
+                "tax": productInfo.tax,
                 "price": productInfo.price
             },
         ],

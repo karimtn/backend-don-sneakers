@@ -15,11 +15,13 @@ router.get("/all-products", async (req, res) => {
 // # ADD A NEW PRODUCT #
 router.post("/new-product", async (req, res) => {
   try {
+    const { name, description, price, quantity, tax } = req.body
     const newProduct = await new product({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      quantity: req.body.quantity,
+      name,
+      description,
+      price,
+      quantity,
+      tax
     }).save();
     res.status(201).send(newProduct);
   } catch (error) {
