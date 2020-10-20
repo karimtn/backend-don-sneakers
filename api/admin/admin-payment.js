@@ -15,48 +15,23 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const userInfo = await user.findById(user_id);
     const productInfo = await product.findById(product_id);
 
-    let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`
     let total = userInfo.price * req.body.quantity
+    console.log('user info price',userInfo.price)
+    console.log("quantity", req.body.quantity)
+    console.log('omar here',userInfo.price * req.body.quantity)
+   
+    // const paymentIntent = await stripe.paymentIntents.create({
+    //   amount: total,
+    //   currency: "usd",
+    // });
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: total,
-      currency: "usd",
-    });
-
-    const transporter = nodeMailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.EMAIL_ADDRESS,
-      to: userInfo.email,
-      subject: "payment status",
-      text: `Thanks for your purchase`,
-      attachments : [
-        { fileName : pdfName , path: `../../assets/pdf-invoices/${pdfName}`}
-      ]
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(`Email sent : ${info.response}`);
-      }
-    });
-
-    const client_secret = paymentIntent.client_secret;
-    res.send({
-      clientSecret: client_secret,
-      price: productInfo.price,
-      quantity: req.body.quantity,
-      total: total,
-    });
-
+    // const client_secret = paymentIntent.client_secret;
+    // res.send({
+    //   clientSecret: client_secret,
+    //   price: productInfo.price,
+    //   quantity: req.body.quantity,
+    //   total: total,
+    // });
 
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
@@ -64,6 +39,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const yyyy = today.getFullYear();
     today = mm + "-" + dd + "-" + yyyy;
     
+    let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`
     let data = {
       currency: "EUR",
       taxNotation: "vat",
@@ -108,12 +84,38 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     );
     number += 1
 
+    const transporter = nodeMailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_ADDRESS,
+      to: userInfo.email,
+      subject: "payment status",
+      text: `Thanks for your purchase`,
+      attachments : [
+        { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `../../assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
+      ]
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(`Email sent : ${info.response}`);
+      }
+    });
+
     await new selledProduct({
       userMail: userInfo.email,
       productName: productInfo.name,
       price: productInfo.price,
       quantity: req.body.quantity,
-      total: productInfo.price * req.body.quantity,
+      total: total,
     }).save();
 
     res.json("shipping info saved in the db");
