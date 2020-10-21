@@ -66,8 +66,7 @@ router.post("/reset-password/:token", async (req, res) => {
     adminInfo.resetPasswordExpires = 0;
     adminInfo.password = await bcrypt.hash(
       confirmedPassword,
-      await bcrypt.genSalt(10)
-    );
+      await bcrypt.genSalt(10));
     await admin.save();
     return res.send("new password setted");
   } catch (error) {
