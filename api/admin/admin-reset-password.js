@@ -36,7 +36,7 @@ router.post("/reset-password", async (req, res) => {
       to: email,
       subject: "Don-Sneaker is helping you to reset your password!",
       text: `To set your new password please
-             click here : https://localhost:4200/${adminInfo.resetPasswordToken}`,
+             click here : https://localhost:4200/${resetPasswordToken}`,
     };
     console.log('after',resetPasswordToken)
     await transporter.sendMail(mailOptions);
