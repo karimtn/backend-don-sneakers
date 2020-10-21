@@ -21,6 +21,8 @@ router.post("/reset-password", async (req, res) => {
     await admin.findOneAndUpdate({email},{resetPasswordToken, resetPasswordExpires})
     const omar = await admin.findOne({ email });
     console.log(omar.resetPasswordExpires)
+    console.log(process.env.EMAIL_ADDRESS)
+    console.log(process.env.EMAIL_PASSWORD)
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
@@ -28,7 +30,6 @@ router.post("/reset-password", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: email,
