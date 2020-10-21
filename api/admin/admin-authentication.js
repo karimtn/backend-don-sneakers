@@ -20,10 +20,6 @@ router.post("/register", async (req, res) => {
       res.send("your email already exist");
     }
 
-    if (password.length > 6) {
-      res.send("your password length should be more than 6 please ");
-    }
-
     if (password !== passwordConfirmation) {
       res.send(
         "your password and your password confirmation are not equal try again"

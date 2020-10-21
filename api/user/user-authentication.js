@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 const user = require("../../models/users");
 
 router.post("/register", async (req, res) => {
@@ -27,31 +27,16 @@ router.post("/register", async (req, res) => {
     }
 
     if (phoneNumberRegistered) {
-      res.send("your phone number is already linked to another account");
-    }
-
-    if (password.length < 6) {
-      res.send("your password length should be more than 6 please ");
+      res.send("your phone number is already linked to another account please chose another one")
     }
 
     if (password !== passwordConfirmation) {
       res.send(
         "your password and your password confirmation are not equal try again"
       );
+    } 
 
-    if (!dateOfBirth) {
-      res.send("you should enter a date of bith to register")
-    }
-
-    if (!country || !city || !address) {
-      res.send("you should enter your country city and address to register")
-    }
-
-    if (!postalCode) {
-      res.send("you should enter a postal code to register")
-    }
-
-    } else {
+    if (!emailRegistered && !phoneNumberRegistered && password === passwordConfirmation) {
       let newUser = new user({
         firstName,
         lastName,
@@ -64,12 +49,12 @@ router.post("/register", async (req, res) => {
         address,
         postalCode,
         dateOfBirth,
-        role:'user',
+        role: "user",
         resetPasswordToken: "",
         resetPasswordExpires: 0,
       });
 
-        bcrypt.hash(newUser.password, 10, async (err, hash) => {
+      bcrypt.hash(newUser.password, 10, async (err, hash) => {
         if (err) {
           console.log(err);
         } else {
@@ -78,7 +63,7 @@ router.post("/register", async (req, res) => {
         }
       });
       res.status(201).send("new user created");
-    }
+    } 
   } catch (error) {
     console.log(error);
     res.send("error");
@@ -93,7 +78,7 @@ router.post("/login", async (req, res) => {
       bcrypt.compare(password, userInfo.password, (err, result) => {
         if (err) {
           res.send("Auth failed");
-          console.log("auth failed")
+          console.log("auth failed");
         }
 
         if (result) {
