@@ -30,6 +30,7 @@ router.post("/reset-password", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+    console.log('first',resetPasswordToken)
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: email,
@@ -37,7 +38,7 @@ router.post("/reset-password", async (req, res) => {
       text: `To set your new password please
              click here : https://localhost:4200/${adminInfo.resetPasswordToken}`,
     };
-
+    console.log('after',resetPasswordToken)
     await transporter.sendMail(mailOptions);
     return res.status(200).json("recovery email sent");
   } catch (error) {
