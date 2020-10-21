@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const product = require("../../models/products");
+const checkAuth = require("../routes-protector")
 
 // # GET THE LIST OF ALL THE PRODUCTS #
-router.get("/all-products", async (req, res) => {
+router.get("/all-products", checkAuth, async (req, res) => {
   try {
     const productList = await product.find({});
     res.send(productList);
@@ -13,7 +14,7 @@ router.get("/all-products", async (req, res) => {
 });
 
 // # ADD A NEW PRODUCT #
-router.post("/new-product", async (req, res) => {
+router.post("/new-product", checkAuth, async (req, res) => {
   try {
     const { name, description, price, quantity, tax } = req.body
     const newProduct = await new product({
@@ -31,7 +32,7 @@ router.post("/new-product", async (req, res) => {
 });
 
 // # EDIT A PRODUCT #
-router.put("/edit-product/:id", async (req, res) => {
+router.put("/edit-product/:id", checkAuth, async (req, res) => {
   try {
     const productEdited = await product.findByIdAndUpdate(req.params.id, req.body);
     res.status(200).send(productEdited);

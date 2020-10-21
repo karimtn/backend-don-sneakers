@@ -34,6 +34,7 @@ router.post("/register", async (req, res) => {
         lastName,
         email,
         password,
+        role:'admin',
         resetPasswordToken: "",
         resetPasswordExpires: 0,
       });

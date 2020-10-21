@@ -18,12 +18,15 @@ const adminSchema = new Schema({
   passwordConfirmation: {
     type: String,
   },
+  role: {
+    type: String
+  },
   resetPasswordToken: {
     type: String,
   },
   resetPasswordExpires: {
     type: Number,
-  },
+  }
 });
 
 module.exports = mongoose.model("admin", adminSchema);

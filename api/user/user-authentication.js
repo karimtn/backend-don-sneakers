@@ -63,6 +63,7 @@ router.post("/register", async (req, res) => {
         address,
         postalCode,
         dateOfBirth,
+        role:'user',
         resetPasswordToken: "",
         resetPasswordExpires: 0,
       });
