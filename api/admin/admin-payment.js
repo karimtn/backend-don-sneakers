@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const easyinvoice = require("easyinvoice");
 const nodeMailer = require("nodemailer")
 const user = require("../../models/users");
@@ -16,9 +16,9 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const productInfo = await product.findById(product_id);
 
     let total = userInfo.price * req.body.quantity
-    console.log('user info price',userInfo.price)
+    console.log('user info price',productInfo.price)
     console.log("quantity", req.body.quantity)
-    console.log('omar here',userInfo.price * req.body.quantity)
+    console.log('omar here',productInfo.price * req.body.quantity)
    
     // const paymentIntent = await stripe.paymentIntents.create({
     //   amount: total,
