@@ -11,14 +11,14 @@ const productSchema = new Schema({
     unique: true,
   },
   price: {
-    type: Number,
+    type: String,
     required: true
   },
   quantity: {
-    type: Number,
+    type: String,
   },
   tax:{
-    type:Number,
+    type:String,
     required: true
   }
 });

@@ -1,9 +1,20 @@
 const router = require("express").Router();
 const product = require("../../models/products");
+const multer = require("multer")
+const storage = multer.diskStorage({
+  destination:  (req,file,cb) => {
+  cb(null,"assets/product-images")
+  },
+
+  filename: (req,file,cb) => {
+  cb(null, new Date().toISOString() + file.originalname)
+  }
+})
+const upload = multer({storage})
 const checkAuth = require("../routes-protector")
 
 // # GET THE LIST OF ALL THE PRODUCTS #
-router.get("/all-products", checkAuth, async (req, res) => {
+router.get("/all-products", async (req, res) => {
   try {
     const productList = await product.find({});
     res.send(productList);
@@ -14,8 +25,9 @@ router.get("/all-products", checkAuth, async (req, res) => {
 });
 
 // # ADD A NEW PRODUCT #
-router.post("/new-product", checkAuth, async (req, res) => {
+router.post("/new-product",upload.single('productImage'), async (req, res) => {
   try {
+    console.log(req.file)
     const { name, description, price, quantity, tax } = req.body
     const newProduct = await new product({
       name,
