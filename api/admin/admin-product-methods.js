@@ -43,7 +43,7 @@ router.put("/edit-product/:id", checkAuth, async (req, res) => {
 });
 
 // # DELETE A PRODUCT #
-router.delete("/delete-product/:id", async (req, res) => {
+router.delete("/delete-product/:id", checkAuth, async (req, res) => {
   try {
     await product.findByIdAndDelete(req.params.id);
     res.status(204).send("product deleted successfully");

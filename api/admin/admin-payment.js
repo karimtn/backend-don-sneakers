@@ -2,6 +2,7 @@ const router = require("express").Router();
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const easyinvoice = require("easyinvoice");
 const nodeMailer = require("nodemailer")
+const checkAuth = require("../routes-protector")
 const user = require("../../models/users");
 const product = require("../../models/products");
 const selledProduct = require("../../models/selledProduct");
@@ -9,7 +10,7 @@ const fs = require("fs");
 require("dotenv").config()
 let number = 0
 
-router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
+router.post("/create-payment-intent/:user_id/:product_id", checkAuth, async (req, res) => {
   try {
     const { user_id, product_id } = req.params;
     const userInfo = await user.findById(user_id);
