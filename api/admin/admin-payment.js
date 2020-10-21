@@ -15,7 +15,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const userInfo = await user.findById(user_id);
     const productInfo = await product.findById(product_id);
 
-    let total = userInfo.price * req.body.quantity
+    let total = productInfo.price * req.body.quantity
     console.log('user info price',productInfo.price)
     console.log("quantity", req.body.quantity)
     console.log('omar here',productInfo.price * req.body.quantity)
@@ -98,7 +98,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       subject: "payment status",
       text: `Thanks for your purchase`,
       attachments : [
-        { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `../../assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
+        { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
       ]
     };
 
