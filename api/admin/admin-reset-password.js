@@ -15,10 +15,12 @@ router.post("/reset-password", async (req, res) => {
       console.error("email not found in the db");
       throw new Error("email not found in the db");
     }
-    adminInfo.resetPasswordToken = crypto.randomBytes(20).toString("hex");
-    adminInfo.resetPasswordExpires = Date.now() + 3600000;
-    await admin.save();
-
+    console.log(adminInfo)
+    const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+    const resetPasswordExpires = Date.now() + 3600000;
+    await admin.findOneAndUpdate({email},{resetPasswordToken, resetPasswordExpires})
+    const omar = await admin.findOne({ email });
+    console.log(omar.resetPasswordExpires)
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {

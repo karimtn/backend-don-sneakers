@@ -106,7 +106,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     console.log("before sendMail variable")
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log('cant set headers here')
+        console.log(error)
       } else {
        console.log(`Email sent : ${info.response}`);
       }
