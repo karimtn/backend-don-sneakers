@@ -69,20 +69,19 @@ router.post("/register", async (req, res) => {
         resetPasswordExpires: 0,
       });
 
-      await bcrypt.hash(newUser.password, 10, (err, hash) => {
+        bcrypt.hash(newUser.password, 10, async (err, hash) => {
         if (err) {
           console.log(err);
         } else {
           newUser.password = hash;
+          await newUser.save();
         }
       });
-
-      await newUser.save();
       res.status(201).send("new user created");
     }
   } catch (error) {
     console.log(error);
-    res.send(error);
+    res.send("error");
   }
 });
 
@@ -94,6 +93,7 @@ router.post("/login", async (req, res) => {
       bcrypt.compare(password, userInfo.password, (err, result) => {
         if (err) {
           res.send("Auth failed");
+          console.log("auth failed")
         }
 
         if (result) {
@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
       res.send("user by this email doesent exist");
     }
   } catch (error) {
-    res.send(error);
+    res.send("error");
     console.log(error);
   }
 });
