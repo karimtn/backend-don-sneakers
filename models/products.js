@@ -8,17 +8,20 @@ const productSchema = new Schema({
   },
   description: {
     type: String,
-    unique: true,
+  },
+  image: {
+    type: String,
+    unique: true
   },
   price: {
-    type: String,
+    type: Number,
     required: true
   },
   quantity: {
-    type: String,
+    type: Number,
   },
   tax:{
-    type:String,
+    type:Number,
     required: true
   }
 });

@@ -10,7 +10,7 @@ const fs = require("fs");
 require("dotenv").config()
 let number = 0
 
-router.post("/create-payment-intent/:user_id/:product_id", checkAuth, async (req, res) => {
+router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
   try {
     const { user_id, product_id } = req.params;
     const userInfo = await user.findById(user_id);
