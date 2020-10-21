@@ -9,20 +9,21 @@ require("dotenv").config;
 router.post("/reset-password", async (req, res) => {
   try {
     const { email } = req.body;
-    if (email === "") throw new Error("Email required !");
     const adminInfo = await admin.findOne({ email });
+    const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+    const resetPasswordExpires = Date.now() + 3600000;
+
+    if (email === "") throw new Error("Email required !");
     if (adminInfo === null) {
       console.error("email not found in the db");
       throw new Error("email not found in the db");
     }
-    console.log(adminInfo)
-    const resetPasswordToken = crypto.randomBytes(20).toString("hex");
-    const resetPasswordExpires = Date.now() + 3600000;
-    await admin.findOneAndUpdate({email},{resetPasswordToken, resetPasswordExpires})
-    const omar = await admin.findOne({ email });
-    console.log(omar.resetPasswordExpires)
-    console.log(process.env.EMAIL_ADDRESS)
-    console.log(process.env.EMAIL_PASSWORD)
+
+    await admin.findOneAndUpdate(
+      { email },
+      { resetPasswordToken, resetPasswordExpires }
+    );
+
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
@@ -30,15 +31,15 @@ router.post("/reset-password", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    console.log('first',resetPasswordToken)
+
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: email,
       subject: "Don-Sneaker is helping you to reset your password!",
       text: `To set your new password please
-             click here : https://localhost:4200/${resetPasswordToken}`,
+             click here : http://localhost:4200/${resetPasswordToken}`,
     };
-    console.log('after',resetPasswordToken)
+
     await transporter.sendMail(mailOptions);
     return res.status(200).json("recovery email sent");
   } catch (error) {
@@ -50,7 +51,7 @@ router.post("/reset-password", async (req, res) => {
 // # RESET THE PASSWORD OF THE ADMIN #
 router.post("/reset-password/:token", async (req, res) => {
   try {
-    const { confirmedPassword } = req.body
+    const { confirmedPassword } = req.body;
     const adminInfo = await admin.findOne({
       resetPasswordToken: req.params.token,
     });
@@ -71,7 +72,8 @@ router.post("/reset-password/:token", async (req, res) => {
     return res.send("new password setted");
   } catch (error) {
     console.log(error);
+    res.send(error)
   }
 });
 
-module.exports = router
+module.exports = router;

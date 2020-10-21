@@ -8,15 +8,20 @@ require("dotenv").config()
 router.post("/reset-password", async (req, res) => {
     try {
       const { email } = req.body;
+      const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+      const resetPasswordExpires = Date.now() + 3600000;
+      
       if (email === "") throw new Error("email required");
       const userInfo = await user.findOne({ email });
       if (userInfo === null) {
         console.error("email is not found in the db");
         throw new Error("email not found in the db");
       }
-      userInfo.resetPasswordToken = crypto.randomBytes(20).toString("hex");
-      userInfo.resetPasswordExpires = Date.now() + 3600000;
-      await user.save();
+      
+      await user.findOneAndUpdate(
+        { email },
+        { resetPasswordToken, resetPasswordExpires }
+      );
   
       const transporter = nodeMailer.createTransport({
         service: "gmail",
@@ -31,7 +36,7 @@ router.post("/reset-password", async (req, res) => {
         to: email,
         subject: "Don-Sneaker is helping you to reset your password!",
         text: `To set your new password please
-               click here : https://localhost:8081/${userInfo.resetPasswordToken}`,
+               click here : http://localhost:8081/${resetPasswordToken}`,
       };
   
       await transporter.sendMail(mailOptions);

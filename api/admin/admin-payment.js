@@ -16,9 +16,6 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const productInfo = await product.findById(product_id);
 
     let total = productInfo.price * req.body.quantity
-    console.log('user info price',productInfo.price)
-    console.log("quantity", req.body.quantity)
-    console.log('omar here',productInfo.price * req.body.quantity)
    
     // const paymentIntent = await stripe.paymentIntents.create({
     //   amount: total,
@@ -32,7 +29,6 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     //   quantity: req.body.quantity,
     //   total: total,
     // });
-    console.log("before today variable")
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -84,8 +80,6 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     );
     number += 1
     
-    console.log("before transporter variable")
-
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
@@ -93,7 +87,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    console.log("before mailOptions variable")
+
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: userInfo.email,
@@ -103,7 +97,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
       ]
     };
-    console.log("before sendMail variable")
+
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error)
@@ -111,8 +105,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
        console.log(`Email sent : ${info.response}`);
       }
     });
-    console.log("before selledProduct db")
-    console.log(userInfo.email)
+
     await new selledProduct({
       userMail: userInfo.email,
       productName: productInfo.name,
