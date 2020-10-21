@@ -32,7 +32,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     //   quantity: req.body.quantity,
     //   total: total,
     // });
-
+    console.log("before today variable")
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -83,6 +83,8 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       "base64"
     );
     number += 1
+    
+    console.log("before transporter variable")
 
     const transporter = nodeMailer.createTransport({
       service: "gmail",
@@ -91,7 +93,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-
+    console.log("before mailOptions variable")
     const mailOptions = {
       from: process.env.EMAIL_ADDRESS,
       to: userInfo.email,
@@ -101,15 +103,16 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
       ]
     };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        res.send(err);
+    console.log("before sendMail variable")
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('cant set headers here')
       } else {
-        res.send(`Email sent : ${info.response}`);
+       console.log(`Email sent : ${info.response}`);
       }
     });
-
+    console.log("before selledProduct db")
+    console.log(userInfo.email)
     await new selledProduct({
       userMail: userInfo.email,
       productName: productInfo.name,
