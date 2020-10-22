@@ -30,7 +30,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     //   quantity: req.body.quantity,
     //   total: total,
     // });
-    
+
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -75,13 +75,17 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       ],
     };
     
+    let oldPath = `/${pdfName}`
+    let newPath = `/assets/pdf-invoices/${pdfName}` 
     const result = await easyinvoice.createInvoice(data);
-    await fs.writeFileSync(
-      pdfName,
-      result.pdf,
-      "base64"
-    );
+    await fs.writeFileSync(pdfName, result.pdf, "base64");
     
+    fs.rename(oldPath, newPath, function (err) {
+      if (err) throw err
+      console.log('Successfully renamed - AKA moved!')
+    })
+
+
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
@@ -96,7 +100,7 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       subject: "payment status",
       text: `Thanks for your purchase`,
       attachments : [
-        { fileName : '#0 omar yakoubi 10-20-2020.pfd' , path: `assets/pdf-invoices/#0 omar yakoubi 10-20-2020.pdf`}
+        { fileName : pdfName , path: `assets/pdf-invoices/${pdfName}`}
       ]
     };
 
