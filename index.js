@@ -13,7 +13,7 @@ app.use(morgan("combined"));
 app.use(helmet());
 app.use(cors());
 
-// #  API MIDDLEWARES USER  #
+// # API MIDDLEWARES SHARED #
 const shared_methods = require("./api/shared/shared-product-methods")
 app.use("/app",shared_methods);
 
@@ -29,6 +29,7 @@ app.use("/app/admin", admin_product_methods)
 app.use("/app/admin", admin_reset_password)
 app.use("/app/admin", payment )
 
+// # API MIDDLEWARES USER #
 const user_authentication = require("./api/user/user-authentication")
 const user_product_methods = require("./api/user/user-product-methods")
 const user_reset_password = require("./api/user/user-reset-password")
@@ -36,7 +37,6 @@ app.use("/app/user", user_authentication)
 app.use("/app/user", user_product_methods)
 app.use("/app/user", user_reset_password)
 
-//#  API MIDDLEWARES SHARED  #
 
 // # DATABASE CONNECTION #
 const DB_URL = process.env.MONGODB_URL;
