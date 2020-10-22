@@ -11,7 +11,7 @@ require("dotenv").config();
 app.use(bodyParser.json());
 app.use(morgan("combined"));
 app.use(helmet());
-app.use(cors())
+app.use(cors());
 
 // #  API MIDDLEWARES USER  #
 const shared_methods = require("./api/shared/shared-product-methods")
