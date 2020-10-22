@@ -30,12 +30,14 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     //   quantity: req.body.quantity,
     //   total: total,
     // });
+    
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy = today.getFullYear();
     today = mm + "-" + dd + "-" + yyyy;
-    
+    number += 1
+
     let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`
     let data = {
       currency: "EUR",
@@ -79,7 +81,6 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
       result.pdf,
       "base64"
     );
-    number += 1
     
     const transporter = nodeMailer.createTransport({
       service: "gmail",
