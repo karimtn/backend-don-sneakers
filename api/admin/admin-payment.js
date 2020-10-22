@@ -7,8 +7,8 @@ const user = require("../../models/users");
 const product = require("../../models/products");
 const selledProduct = require("../../models/selledProduct");
 const fs = require("fs");
-require("dotenv").config()
-let number = 0
+require("dotenv").config();
+let number = 0;
 
 router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
   try {
@@ -36,9 +36,9 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy = today.getFullYear();
     today = mm + "-" + dd + "-" + yyyy;
-    number += 1
+    number += 1;
 
-    let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`
+    let pdfName = `#${number} ${userInfo.firstName} ${userInfo.lastName} ${today}.pdf`;
     let data = {
       currency: "EUR",
       taxNotation: "vat",
@@ -74,17 +74,9 @@ router.post("/create-payment-intent/:user_id/:product_id", async (req, res) => {
         },
       ],
     };
-    
-    let oldPath = `/${pdfName}`
-    let newPath = `/assets/pdf-invoices/${pdfName}` 
+  
     const result = await easyinvoice.createInvoice(data);
-    await fs.writeFileSync(pdfName, result.pdf, "base64");
-    
-    fs.rename(oldPath, newPath, function (err) {
-      if (err) throw err
-      console.log('Successfully renamed - AKA moved!')
-    })
-
+    await fs.writeFileSync(`assets/pdf-invoices/${pdfName}`, result.pdf, "base64");
 
     const transporter = nodeMailer.createTransport({
       service: "gmail",
