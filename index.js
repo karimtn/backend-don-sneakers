@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(cors());
 
 // # API MIDDLEWARES SHARED #
-const shared_methods = require("./api/shared/shared-product-methods")
+const shared_methods = require("./api/shared/shared-methods")
 app.use("/app",shared_methods);
 
 // # API MIDDLEWARES ADMIN #
