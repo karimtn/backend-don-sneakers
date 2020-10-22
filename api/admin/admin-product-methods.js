@@ -17,16 +17,6 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 // ###############################
 
-// # GET THE LIST OF ALL THE PRODUCTS #
-router.get("/all-products", async (req, res) => {
-  try {
-    const productList = await product.find({});
-    res.send(productList);
-  } catch (error) {
-    console.log(error);
-    res.send(error);
-  }
-});
 
 // # ADD A NEW PRODUCT #
 router.post("/new-product",checkAuth, upload.single('productImage'), async (req, res) => {
