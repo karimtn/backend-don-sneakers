@@ -21,7 +21,6 @@ const upload = multer({storage})
 // # ADD A NEW PRODUCT #
 router.post("/new-product",checkAuth, upload.single('productImage'), async (req, res) => {
   try {
-    console.log(req.file)
     const { name, description, price, quantity, tax } = req.body
     const newProduct = await new product({
       name,

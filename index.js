@@ -33,6 +33,7 @@ app.use("/app/user", user_authentication)
 app.use("/app/user", user_product_methods)
 app.use("/app/user", user_reset_password)
 
+//#  API MIDDLEWARES SHARED  #
 
 // # DATABASE CONNECTION #
 const DB_URL = process.env.MONGODB_URL;
