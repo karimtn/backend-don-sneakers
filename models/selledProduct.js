@@ -22,6 +22,10 @@ const selledProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  invoice:{
+    type:String,
+    unique:true
+  }
 });
 
 module.exports = mongoose.model("selledProduct",selledProductSchema)
