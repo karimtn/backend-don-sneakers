@@ -76,8 +76,8 @@ router.post("/create-payment-intent/:user_id/:product_id", checkAuth, async (req
     };
   
     const result = await easyinvoice.createInvoice(data);
-    await fs.writeFileSync(`assets/pdf-invoices/${pdfName}`, result.pdf, "base64");
-
+    const pdfPath = `assets/pdf-invoices/${pdfName}`
+    await fs.writeFileSync(pdfPath, result.pdf, "base64");
     const transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
@@ -110,6 +110,7 @@ router.post("/create-payment-intent/:user_id/:product_id", checkAuth, async (req
       price: productInfo.price,
       quantity: req.body.quantity,
       total: total,
+      pdf: pdfPath
     }).save();
 
     res.json("shipping info saved in the db");
