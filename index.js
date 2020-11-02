@@ -31,10 +31,8 @@ app.use("/app/admin", payment )
 
 // # API MIDDLEWARES USER #
 const user_authentication = require("./api/user/user-authentication")
-const user_product_methods = require("./api/user/user-product-methods")
 const user_reset_password = require("./api/user/user-reset-password")
 app.use("/app/user", user_authentication)
-app.use("/app/user", user_product_methods)
 app.use("/app/user", user_reset_password)
 
 
